@@ -1,0 +1,75 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background-color: #F3F6F5;
+  color: #10233F;
+}
+
+@layer components {
+  .btn-primary {
+    @apply inline-flex items-center justify-center gap-2 rounded-full bg-marigold px-6 py-3 font-body font-semibold text-ink shadow-card transition hover:bg-marigold-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ink;
+  }
+
+  .btn-secondary {
+    @apply inline-flex items-center justify-center gap-2 rounded-full border border-ink/15 bg-white px-6 py-3 font-body font-semibold text-ink transition hover:border-ink/30 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ink;
+  }
+
+  .field {
+    @apply w-full rounded-lg border border-ink/15 bg-white px-4 py-2.5 font-body text-ink placeholder:text-ink/40 focus:border-teal focus:outline-none focus:ring-2 focus:ring-teal/20;
+  }
+
+  .card {
+    @apply rounded-xl2 border border-ink/10 bg-white shadow-card;
+  }
+}
+
+/* Progress path — the signature visual: an ascending rung ladder
+   used for module lists, mirroring "Transforming Talent into Opportunity" */
+.rung {
+  position: relative;
+  padding-left: 2.25rem;
+}
+
+.rung::before {
+  content: "";
+  position: absolute;
+  left: 0.6rem;
+  top: 0;
+  bottom: -1.5rem;
+  width: 2px;
+  background: linear-gradient(to bottom, currentColor, transparent);
+  opacity: 0.25;
+}
+
+.rung:last-child::before {
+  display: none;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .reveal {
+    animation: reveal-up 0.5s ease-out both;
+  }
+}
+
+@keyframes reveal-up {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .progress-fill {
+    transition: width 0.9s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+}
