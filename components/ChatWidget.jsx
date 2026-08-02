@@ -16,8 +16,7 @@ export default function ChatWidget() {
   const bottomRef = useRef(null);
 
   useEffect(() => {
-    bottomRef.current?.scrollIntoView({ behavior: "smooth" });
-  }, [messages]);
+bottomRef.current?.scrollIntoView({ behavior: "smooth", block: "nearest" });  }, [messages]);
 
   const send = async (e) => {
     e.preventDefault();

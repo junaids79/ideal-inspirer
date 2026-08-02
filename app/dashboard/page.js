@@ -11,13 +11,7 @@ import ContinueLearningCard from "@/components/dashboard/ContinueLearningCard";
 import MyCourseCard from "@/components/dashboard/MyCourseCard";
 import RecommendedCourseCard from "@/components/dashboard/RecommendedCourseCard";
 import CourseThumbnail from "@/components/dashboard/CourseThumbnail";
-import {
-  dashboardStats,
-  continueLearningCourses,
-  enrolledCourses,
-  recentlyViewed,
-  recommendedCourses,
-} from "@/lib/dashboardData";
+import { getLearnerDashboardData } from "@/lib/data";
 
 function getFirstName(user) {
   const fullName = user?.user_metadata?.full_name;
@@ -53,6 +47,16 @@ export default function DashboardPage() {
   const router = useRouter();
   const [searchTerm, setSearchTerm] = useState("");
   const [activeFilter, setActiveFilter] = useState("All");
+  const [dashboardStats, setDashboardStats] = useState({
+    coursesEnrolled: 0,
+    averageProgress: 0,
+    completed: 0,
+  });
+  const [continueLearningCourses, setContinueLearningCourses] = useState([]);
+  const [enrolledCourses, setEnrolledCourses] = useState([]);
+  const [recentlyViewed, setRecentlyViewed] = useState([]);
+  const [recommendedCourses, setRecommendedCourses] = useState([]);
+  const [dashboardLoading, setDashboardLoading] = useState(true);
 
   useEffect(() => {
     if (!authLoading && !user) {
@@ -79,6 +83,21 @@ export default function DashboardPage() {
       }
     }
     ensureProfile();
+  }, [user]);
+
+  useEffect(() => {
+    async function loadDashboard() {
+      if (!user) return;
+      setDashboardLoading(true);
+      const data = await getLearnerDashboardData(user.id);
+      setDashboardStats(data.stats);
+      setContinueLearningCourses(data.continueLearningCourses);
+      setEnrolledCourses(data.enrolledCourses);
+      setRecentlyViewed(data.recentlyViewed);
+      setRecommendedCourses(data.recommendedCourses);
+      setDashboardLoading(false);
+    }
+    loadDashboard();
   }, [user]);
 
   const firstName = getFirstName(user);
@@ -111,7 +130,7 @@ export default function DashboardPage() {
     [activeFilter, searchTerm]
   );
 
-  if (authLoading || !user) {
+  if (authLoading || !user || dashboardLoading) {
     return (
       <div className="mx-auto max-w-6xl px-6 py-24 text-center font-body text-sm text-ink/50">
         Loading dashboard...
@@ -131,7 +150,7 @@ export default function DashboardPage() {
               Welcome, {firstName}
             </h1>
             <p className="mt-3 max-w-2xl font-body text-sm leading-6 text-ink/60 md:text-base">
-              Your courses, progress, certificates, and recommendations in one
+              Your courses, progress, and recommendations in one
               clean LMS dashboard.
             </p>
           </div>
@@ -140,8 +159,7 @@ export default function DashboardPage() {
             {[
               { label: "Courses Enrolled", value: dashboardStats.coursesEnrolled },
               { label: "Average Progress", value: `${dashboardStats.averageProgress}%` },
-              { label: "Certificates", value: dashboardStats.certificates },
-              { label: "Learning Hours", value: dashboardStats.learningHours },
+              { label: "Completed Courses", value: dashboardStats.completed },
             ].map((item) => (
               <div key={item.label} className="rounded-2xl bg-ink/5 px-4 py-3">
                 <p className="font-mono text-[10px] uppercase tracking-[0.18em] text-ink/45">
@@ -171,15 +189,9 @@ export default function DashboardPage() {
             />
             <StatsCard
               icon="🎓"
-              label="Certificates"
-              value={dashboardStats.certificates}
+              label="Completed Courses"
+              value={dashboardStats.completed}
               accent="teal"
-            />
-            <StatsCard
-              icon="⏱"
-              label="Learning Hours"
-              value={dashboardStats.learningHours}
-              accent="ink"
             />
           </div>
         </section>
@@ -372,11 +384,10 @@ export default function DashboardPage() {
           className="mt-10 rounded-xl2 border border-ink/10 bg-white shadow-card"
           aria-label="Quick summary"
         >
-          <div className="grid divide-y divide-ink/10 sm:grid-cols-2 sm:divide-x sm:divide-y-0 lg:grid-cols-4">
+          <div className="grid divide-y divide-ink/10 sm:grid-cols-3 sm:divide-x sm:divide-y-0">
             {[
               { label: "Courses", value: dashboardStats.coursesEnrolled },
-              { label: "Certificates", value: dashboardStats.certificates },
-              { label: "Hours", value: dashboardStats.learningHours },
+              { label: "Average Progress", value: `${dashboardStats.averageProgress}%` },
               { label: "Completed", value: dashboardStats.completed },
             ].map((item) => (
               <div key={item.label} className="px-6 py-5 text-center">

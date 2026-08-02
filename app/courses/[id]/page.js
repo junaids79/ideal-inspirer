@@ -4,6 +4,7 @@ import { useEffect, useState, useCallback } from "react";
 import Link from "next/link";
 import { useParams } from "next/navigation";
 import { useAuth } from "@/components/AuthProvider";
+import { supabase } from "@/lib/supabaseClient";
 import {
   getCourseById,
   getModulesForCourse,
@@ -13,6 +14,7 @@ import {
   getEnrollment,
 } from "@/lib/data";
 import ProgressBar from "@/components/dashboard/ProgressBar";
+import { generateCertificateNo } from "@/lib/certificate";
 
 function ModuleState({ unlocked, completed, isPreview }) {
   if (completed) return { label: "Completed", tone: "text-teal-700" };
@@ -39,7 +41,7 @@ function getEmbedUrl(url) {
   return null; // not a known embed host — treat as a direct video file
 }
 
-function LessonPlayer({ module, isLocked }) {
+function LessonPlayer({ module, isLocked, lessonId, completed, onComplete, busy }) {
   const embedUrl = getEmbedUrl(module.video_url);
   return (
     <div className="overflow-hidden rounded-[1.75rem] border border-ink/10 bg-white shadow-card">
@@ -138,6 +140,19 @@ function LessonPlayer({ module, isLocked }) {
           </p>
         </div>
       </div>
+
+      {!isLocked && lessonId && (
+        <div className="border-t border-ink/10 px-5 py-4 sm:px-6">
+          <button
+            type="button"
+            onClick={() => onComplete(lessonId)}
+            disabled={completed || busy}
+            className="rounded bg-green-600 px-4 py-2 text-white disabled:cursor-not-allowed disabled:opacity-60"
+          >
+            {completed ? "Completed ✓" : busy ? "Saving..." : "Complete Lesson"}
+          </button>
+        </div>
+      )}
     </div>
   );
 }
@@ -167,10 +182,14 @@ export default function CourseDetailPage() {
   const [course, setCourse] = useState(null);
   const [modules, setModules] = useState([]);
   const [completedIds, setCompletedIds] = useState([]);
+  const [completedLessonIds, setCompletedLessonIds] = useState([]);
   const [enrolled, setEnrolled] = useState(false);
   const [loading, setLoading] = useState(true);
   const [busyModuleId, setBusyModuleId] = useState(null);
+  const [busyLessonId, setBusyLessonId] = useState(null);
   const [selectedModuleId, setSelectedModuleId] = useState(null);
+  const [certificateIssued, setCertificateIssued] = useState(false);
+  const [certificateChecked, setCertificateChecked] = useState(false);
 
   const load = useCallback(async () => {
     setLoading(true);
@@ -182,7 +201,7 @@ export default function CourseDetailPage() {
     // Each module's actual video lives in the "lessons" table (added via
     // the admin "Manage Videos" page), not on the module row itself —
     // pull the first lesson in per module so the player has something to show.
-   const modulesWithLessons = await Promise.all(
+    const modulesWithLessons = await Promise.all(
       (moduleData ?? []).map(async (module) => {
         const lessons = await getLessonsForModule(module.id);
         const firstLesson = lessons[0];
@@ -207,9 +226,35 @@ export default function CourseDetailPage() {
       ]);
       setCompletedIds(done);
       setEnrolled(Boolean(enrollment));
+
+      // Only count lessons that belong to this course.
+      const courseLessonIds = modulesWithLessons.flatMap((m) =>
+        (m.lessons ?? []).map((l) => l.id)
+      );
+
+      const { data: progressRows, error: progressError } = await supabase
+        .from("lesson_progress")
+        .select("lesson_id")
+        .eq("user_id", user.id)
+        .eq("completed", true)
+        .in(
+          "lesson_id",
+          courseLessonIds.length
+            ? courseLessonIds
+            : ["00000000-0000-0000-0000-000000000000"]
+        );
+
+      if (!progressError) {
+        setCompletedLessonIds(
+          [...new Set((progressRows ?? []).map((row) => row.lesson_id))]
+        );
+      } else {
+        setCompletedLessonIds([]);
+      }
     } else {
       setCompletedIds([]);
       setEnrolled(false);
+      setCompletedLessonIds([]);
     }
     setLoading(false);
   }, [id, user]);
@@ -228,14 +273,91 @@ export default function CourseDetailPage() {
     setBusyModuleId(null);
   };
 
+  const markLessonComplete = async (lessonId) => {
+    if (!user || !lessonId) return;
+    setBusyLessonId(lessonId);
+    const { error } = await supabase
+      .from("lesson_progress")
+      .upsert({
+        user_id: user.id,
+        lesson_id: lessonId,
+        completed: true,
+      });
+    if (!error) {
+      setCompletedLessonIds((prev) => [...new Set([...prev, lessonId])]);
+    }
+    setBusyLessonId(null);
+  };
+
   const selectedModule =
     modules.find((module) => module.id === selectedModuleId) ?? modules[0] ?? null;
+  const selectedLessonId = selectedModule?.lessons?.[0]?.id ?? null;
+
+  // Lesson-level progress: counts every lesson across every module, not
+  // just one lesson per module, so this is the number used for the
+  // certificate threshold.
+  const totalLessons = modules.reduce(
+    (sum, module) => sum + (module.lessons?.length ?? 0),
+    0
+  );
+  const completedLessonsCount = completedLessonIds.length;
   const progressPercent =
-    modules.length > 0 ? Math.round((completedIds.length / modules.length) * 100) : 0;
+    totalLessons > 0
+      ? Math.round((completedLessonsCount / totalLessons) * 100)
+      : 0;
+
   const nextModule = getNextUnlockedModule(modules, completedIds, {
     isFree: course?.is_free,
     enrolled,
   });
+
+  // Once the learner hits 100%, check whether a certificate already
+  // exists for this user/course; if not, issue one.
+  useEffect(() => {
+    if (!user || !course || totalLessons === 0) return;
+    if (progressPercent !== 100) {
+      setCertificateChecked(false);
+      setCertificateIssued(false);
+      return;
+    }
+    if (certificateChecked) return;
+
+    let cancelled = false;
+
+    (async () => {
+      const { data: existing, error: lookupError } = await supabase
+        .from("certificates")
+        .select("*")
+        .eq("user_id", user.id)
+        .eq("course_id", course.id)
+        .single();
+
+      // `.single()` errors (e.g. PGRST116) when no row is found — that's
+      // expected here and just means we still need to issue one.
+      if (!cancelled) {
+        if (existing) {
+          setCertificateIssued(true);
+          setCertificateChecked(true);
+          return;
+        }
+const { error: insertError } = await supabase
+  .from("certificates")
+  .insert({
+    user_id: user.id,
+    course_id: course.id,
+    certificate_number: generateCertificateNo(),
+  });
+        if (!cancelled) {
+          setCertificateIssued(!insertError);
+          setCertificateChecked(true);
+        }
+      }
+    })();
+
+    return () => {
+      cancelled = true;
+    };
+  }, [user, course, totalLessons, progressPercent, certificateChecked]);
 
   if (loading || authLoading) {
     return (
@@ -298,7 +420,7 @@ export default function CourseDetailPage() {
             <p className="font-display text-lg font-semibold text-ink">
               {course.is_free ? "Free" : `₹${course.price}`}
             </p>
-           <button
+            <button
               type="button"
               onClick={() => {
                 // TODO: no payment gateway wired up yet.
@@ -311,8 +433,8 @@ export default function CourseDetailPage() {
           </div>
 
           {course.syllabus_url && (
-            
-             <a href={course.syllabus_url}
+            <a
+              href={course.syllabus_url}
               target="_blank"
               rel="noopener noreferrer"
               className="mt-4 inline-flex items-center gap-2 rounded-lg border border-ink/10 bg-white px-5 py-2.5 font-body text-sm font-semibold text-ink hover:border-teal-700/30 hover:text-teal-700"
@@ -343,6 +465,10 @@ export default function CourseDetailPage() {
                     { isFree: course?.is_free, enrolled }
                   )
                 }
+                lessonId={selectedLessonId}
+                completed={completedLessonIds.includes(selectedLessonId)}
+                onComplete={markLessonComplete}
+                busy={busyLessonId === selectedLessonId}
               />
             ) : (
               <div className="card px-6 py-10 font-body text-sm text-ink/55">
@@ -381,19 +507,30 @@ export default function CourseDetailPage() {
 
             <div className="mt-5 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
               <p className="font-body text-sm text-ink/55">
-                {nextModule
+                {progressPercent === 100
+                  ? "You’ve completed every lesson in this program."
+                  : nextModule
                   ? `Next up: ${nextModule.title}`
                   : "You’ve caught up with the available lessons."}
               </p>
               <div className="flex flex-wrap gap-3">
-                {nextModule && (
-                  <button
-                    type="button"
-                    onClick={() => setSelectedModuleId(nextModule.id)}
-                    className="btn-secondary px-5 py-2.5 text-sm"
+                {progressPercent === 100 && certificateIssued ? (
+                  <Link
+                    href={`/certificate/${course.id}`}
+                    className="btn-primary px-5 py-2.5 text-sm"
                   >
-                    Continue Learning
-                  </button>
+                    View Certificate
+                  </Link>
+                ) : (
+                  nextModule && (
+                    <button
+                      type="button"
+                      onClick={() => setSelectedModuleId(nextModule.id)}
+                      className="btn-secondary px-5 py-2.5 text-sm"
+                    >
+                      Continue Learning
+                    </button>
+                  )
                 )}
                 <Link href="/dashboard" className="btn-primary px-5 py-2.5 text-sm">
                   Go to Dashboard
@@ -442,14 +579,15 @@ export default function CourseDetailPage() {
                   <li key={module.id}>
                     <button
                       type="button"
-onClick={() => {
-  if (locked) {
-    alert("Purchase the course to unlock this lesson.");
-    return;
-  }
+                      onClick={() => {
+                        if (locked) {
+                          alert("Purchase the course to unlock this lesson.");
+                          return;
+                        }
 
-  setSelectedModuleId(module.id);
-}}                      className={`w-full rounded-2xl border px-4 py-4 text-left transition ${
+                        setSelectedModuleId(module.id);
+                      }}
+                      className={`w-full rounded-2xl border px-4 py-4 text-left transition ${
                         active
                           ? "border-teal-700 bg-teal-50/60"
                           : "border-ink/10 bg-white hover:border-teal-700/30 hover:shadow-sm"
@@ -501,9 +639,7 @@ onClick={() => {
                   </li>
                 );
               })}
-              
             </ol>
-            
           )}
         </aside>
       </div>

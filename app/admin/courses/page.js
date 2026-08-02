@@ -35,7 +35,7 @@ export default function AdminCoursesPage() {
     setLoading(false);
   }
 
-  async function deleteCourse(courseId) {
+ async function deleteCourse(courseId) {
     const confirmed = window.confirm(
       "Delete this course? Its modules and videos will need to be removed separately."
     );
@@ -47,6 +47,9 @@ export default function AdminCoursesPage() {
       alert(error.message);
       return;
     }
+
+    // Tell the public /courses page to drop its cached data.
+    await fetch("/api/revalidate-courses", { method: "POST" });
 
     fetchCourses();
   }

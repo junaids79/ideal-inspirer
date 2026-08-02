@@ -16,11 +16,11 @@ module.exports = {
           900: "#0A1526",
         },
         marigold: {
-          DEFAULT: "#F5A524",
-          50: "#FEF6E9",
-          100: "#FCE9C4",
-          400: "#F7B655",
-          600: "#D98A0E",
+          DEFAULT: "#00BFF9",
+          50: "#EBFAFF",
+          100: "#C7F1FE",
+          400: "#47D1FB",
+          600: "#0688B8",
         },
         teal: {
           DEFAULT: "#0E7C7B",

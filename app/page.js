@@ -154,6 +154,146 @@ export default async function HomePage() {
         </div>
       </section>
 
+      {/* About */}
+      <section className="mx-auto max-w-6xl px-6 py-20">
+        <p className="font-mono text-xs uppercase tracking-[0.2em] text-teal-700">
+          About us
+        </p>
+        <h2 className="mt-3 max-w-2xl font-display text-2xl font-semibold text-ink md:text-3xl">
+          A trusted name in modern education and professional training.
+        </h2>
+
+        <div className="mt-6 grid gap-10 md:grid-cols-[1.3fr_1fr] md:items-start">
+          <div className="space-y-4 font-body text-sm leading-6 text-ink/65 md:text-base">
+            <p>
+              Ideal Inspirer is a forward-thinking EdTech organization dedicated
+              to transforming education through innovation, practical learning,
+              and skill development. Recognized with the{" "}
+              <span className="font-semibold text-ink">
+                Best EdTech Startup Award 2025
+              </span>{" "}
+              at the prestigious Indian School Awards held at Ashoka Hotel,
+              Hyderabad, Ideal Inspirer has established itself as a trusted name
+              in modern education and professional training.
+            </p>
+            <p>
+              Founded by Dr. MD Siraj, Ideal Inspirer focuses on empowering
+              students and educators through advanced training in software
+              technology, English communication, and life skills development.
+              The organization bridges the global skills gap by preparing
+              learners with the practical knowledge and confidence needed to
+              succeed in today's competitive and technology-driven world.
+            </p>
+            <p>
+              At Ideal Inspirer, education goes beyond textbooks. Our programs
+              are designed for schools and colleges, integrating modern
+              technology with hands-on learning experiences — helping students
+              develop the creativity, communication skills, and professional
+              competence required for global opportunities.
+            </p>
+            <p>
+              With a strong commitment to excellence, innovation, and
+              accessibility, our training modules focus on 21st-century skills
+              that help learners grow academically and professionally. Ideal
+              Inspirer continuously adapts to industry trends to ensure students
+              and teachers remain future-ready — contributing to the development
+              of confident, skilled, and globally competitive learners while
+              supporting institutions in building stronger learning ecosystems.
+            </p>
+          </div>
+
+          <img
+            src="/about-photo.jpg"
+            alt="Ideal Inspirer training session"
+            className="w-full rounded-2xl object-cover shadow-card md:sticky md:top-24 md:h-[420px]"
+          />
+        </div>
+      </section>
+
+      {/* Founder */}
+      <section className="bg-white">
+        <div className="mx-auto max-w-6xl px-6 py-20">
+          <div className="card grid gap-8 p-8 md:grid-cols-[minmax(0,220px)_1fr] md:p-10">
+            <div>
+              <p className="font-mono text-xs uppercase tracking-[0.2em] text-teal-700">
+                Founder & CEO
+              </p>
+              <h3 className="mt-3 font-display text-xl font-semibold text-ink">
+                Dr. MD Siraj
+              </h3>
+              <p className="mt-1 font-body text-sm text-ink/55">
+                Internationally Certified Master Trainer (ACTD)
+              </p>
+            </div>
+            <div className="space-y-4 font-body text-sm leading-6 text-ink/65 md:text-base">
+              <p>
+                Dr. MD Siraj is the visionary founder of Ideal Inspirer and an
+                internationally certified master trainer committed to
+                transforming education through innovation and skill-based
+                learning. With extensive experience in professional training
+                and educational development, he has empowered thousands of
+                students, educators, and professionals to unlock their true
+                potential.
+              </p>
+              <p>
+                His mission is to bridge the gap between academic learning and
+                real-world skills by introducing modern training programs in
+                technology, communication, and personal development. Through
+                his leadership, Ideal Inspirer continues to create impactful
+                learning opportunities that prepare individuals for global
+                success.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Mission & Vision */}
+      <section className="mx-auto max-w-6xl px-6 py-20">
+        <p className="text-center font-mono text-xs uppercase tracking-[0.2em] text-teal-700">
+          What drives us
+        </p>
+        <h2 className="mt-3 text-center font-display text-2xl font-semibold text-ink md:text-3xl">
+          Mission &amp; Vision
+        </h2>
+
+        <div className="mt-10 grid gap-6 sm:grid-cols-2">
+          <div className="card group relative overflow-hidden p-8 transition hover:-translate-y-1 hover:shadow-lg">
+            <div className="absolute inset-x-0 top-0 h-1 bg-marigold" />
+            <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-marigold-50 text-2xl">
+              🎯
+            </div>
+            <p className="mt-5 font-mono text-xs uppercase tracking-[0.2em] text-teal-700">
+              Our mission
+            </p>
+            <p className="mt-3 font-body text-sm leading-6 text-ink/65 md:text-base">
+              Our mission is to empower students and educators by providing
+              high-quality training in technology, communication, and life
+              skills. Through innovative teaching methods and practical
+              learning approaches, we aim to build confident individuals who
+              are prepared to succeed on a global stage.
+            </p>
+          </div>
+
+          <div className="card group relative overflow-hidden p-8 transition hover:-translate-y-1 hover:shadow-lg">
+            <div className="absolute inset-x-0 top-0 h-1 bg-teal" />
+            <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-teal-50 text-2xl">
+              🔭
+            </div>
+            <p className="mt-5 font-mono text-xs uppercase tracking-[0.2em] text-teal-700">
+              Our vision
+            </p>
+            <p className="mt-3 font-body text-sm leading-6 text-ink/65 md:text-base">
+              Our vision is to become a globally recognized education and
+              training platform that nurtures future leaders. By delivering
+              impactful learning experiences and fostering innovation, Ideal
+              Inspirer strives to shape the future of education and skill
+              development across India and beyond.
+            </p>
+          </div>
+        </div>
+      </section>
+
       {/* CTA banner */}
       <section className="mx-auto max-w-6xl px-6 py-20 text-center">
         <h2 className="font-display text-2xl font-semibold text-ink md:text-3xl">

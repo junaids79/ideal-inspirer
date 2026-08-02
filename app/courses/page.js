@@ -4,6 +4,7 @@ import { getCourses } from "@/lib/data";
 export const metadata = {
   title: "Courses | Ideal Inspirer",
 };
+export const dynamic = "force-dynamic"; // <-- add this
 
 export default async function CoursesPage() {
   const courses = await getCourses();
@@ -35,9 +36,13 @@ export default async function CoursesPage() {
         <div className="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
           {courses.map((course) => (
             <CourseCard key={course.id} course={course} />
+            
           ))}
         </div>
+
       )}
+
     </section>
+    
   );
 }
