@@ -203,7 +203,7 @@ export default async function HomePage() {
           </div>
 
           <img
-            src="/about-photo.jpg"
+            src="/founder_img.png"
             alt="Ideal Inspirer training session"
             className="w-full rounded-2xl object-cover shadow-card md:sticky md:top-24 md:h-[420px]"
           />
