@@ -23,14 +23,15 @@ export default function Navbar() {
   return (
     <header className="sticky top-0 z-40 border-b border-ink/10 bg-paper/90 backdrop-blur">
       <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-4">
-        <Link
-          href="/"
-          className="font-display text-xl font-semibold tracking-tight text-ink"
-        >
-          Ideal<span className="text-marigold">Inspirer</span>
+        <Link href="/" className="flex items-center">
+          <img
+            src="/Logo.jpeg"
+            alt="Ideal Inspirer"
+            className="className=h-[6rem] w-[9rem] object-contain"
+          />
         </Link>
 
-        <nav className="hidden items-center gap-8 font-body text-sm font-medium text-ink/80 md:flex">
+        <nav className="hidden items-center gap-8 font-body text-base font-medium text-ink/80 md:flex">
           {links.map((link) => (
             <Link key={link.href} href={link.href} className="transition hover:text-ink">
               {link.label}
@@ -43,11 +44,11 @@ export default function Navbar() {
             <>
               <Link
                 href="/login"
-                className="font-body text-sm font-medium text-ink/80 hover:text-ink"
+                className="font-body text-base font-medium text-ink/80 hover:text-ink"
               >
                 Log in
               </Link>
-              <Link href="/signup" className="btn-primary px-5 py-2 text-sm">
+              <Link href="/signup" className="btn-primary px-5 py-2.5 text-base">
                 Get started
               </Link>
             </>
@@ -57,18 +58,18 @@ export default function Navbar() {
               {adminAccess && (
                 <Link
                   href="/admin"
-                  className="font-body text-sm font-medium text-ink/80 hover:text-ink"
+                  className="font-body text-base font-medium text-ink/80 hover:text-ink"
                 >
                   Admin
                 </Link>
               )}
               <Link
                 href="/dashboard"
-                className="font-body text-sm font-medium text-ink/80 hover:text-ink"
+                className="font-body text-base font-medium text-ink/80 hover:text-ink"
               >
                 Dashboard
               </Link>
-              <button onClick={signOut} className="btn-secondary px-5 py-2 text-sm">
+              <button onClick={signOut} className="btn-secondary px-5 py-2.5 text-base">
                 Log out
               </button>
             </>
@@ -91,7 +92,7 @@ export default function Navbar() {
 
       {open && (
         <div className="border-t border-ink/10 bg-paper px-6 py-4 md:hidden">
-          <nav className="flex flex-col gap-3 font-body text-sm font-medium text-ink/80">
+          <nav className="flex flex-col gap-3 font-body text-base font-medium text-ink/80">
             {links.map((link) => (
               <Link key={link.href} href={link.href} onClick={() => setOpen(false)}>
                 {link.label}

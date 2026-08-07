@@ -186,20 +186,11 @@ export default async function HomePage() {
             </p>
             <p>
               At Ideal Inspirer, education goes beyond textbooks. Our programs
-              are designed for schools and colleges, integrating modern
-              technology with hands-on learning experiences — helping students
+              are designed for schools and colleges — helping students
               develop the creativity, communication skills, and professional
               competence required for global opportunities.
             </p>
-            <p>
-              With a strong commitment to excellence, innovation, and
-              accessibility, our training modules focus on 21st-century skills
-              that help learners grow academically and professionally. Ideal
-              Inspirer continuously adapts to industry trends to ensure students
-              and teachers remain future-ready — contributing to the development
-              of confident, skilled, and globally competitive learners while
-              supporting institutions in building stronger learning ecosystems.
-            </p>
+        
           </div>
 
           <img

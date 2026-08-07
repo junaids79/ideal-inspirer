@@ -47,7 +47,7 @@ bottomRef.current?.scrollIntoView({ behavior: "smooth", block: "nearest" });  },
       ]);
     } catch (err) {
       setError(
-        "Couldn't reach the advisor right now. Check that ANTHROPIC_API_KEY is set on the server."
+        "Couldn't reach the advisor right now. Check that GROQ_API_KEY is set on the server."
       );
     } finally {
       setSending(false);

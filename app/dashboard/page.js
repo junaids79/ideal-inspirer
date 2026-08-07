@@ -10,7 +10,6 @@ import StatsCard from "@/components/dashboard/StatsCard";
 import ContinueLearningCard from "@/components/dashboard/ContinueLearningCard";
 import MyCourseCard from "@/components/dashboard/MyCourseCard";
 import RecommendedCourseCard from "@/components/dashboard/RecommendedCourseCard";
-import CourseThumbnail from "@/components/dashboard/CourseThumbnail";
 import { getLearnerDashboardData } from "@/lib/data";
 
 function getFirstName(user) {
@@ -54,7 +53,6 @@ export default function DashboardPage() {
   });
   const [continueLearningCourses, setContinueLearningCourses] = useState([]);
   const [enrolledCourses, setEnrolledCourses] = useState([]);
-  const [recentlyViewed, setRecentlyViewed] = useState([]);
   const [recommendedCourses, setRecommendedCourses] = useState([]);
   const [dashboardLoading, setDashboardLoading] = useState(true);
 
@@ -93,7 +91,6 @@ export default function DashboardPage() {
       setDashboardStats(data.stats);
       setContinueLearningCourses(data.continueLearningCourses);
       setEnrolledCourses(data.enrolledCourses);
-      setRecentlyViewed(data.recentlyViewed);
       setRecommendedCourses(data.recommendedCourses);
       setDashboardLoading(false);
     }
@@ -111,13 +108,6 @@ export default function DashboardPage() {
   const filteredEnrolledCourses = useMemo(
     () =>
       enrolledCourses.filter((course) =>
-        matchesFilter(course, searchTerm, activeFilter)
-      ),
-    [activeFilter, searchTerm]
-  );
-  const filteredRecentlyViewed = useMemo(
-    () =>
-      recentlyViewed.filter((course) =>
         matchesFilter(course, searchTerm, activeFilter)
       ),
     [activeFilter, searchTerm]
@@ -140,7 +130,7 @@ export default function DashboardPage() {
 
   return (
     <div className="mx-auto max-w-7xl px-4 py-6 sm:px-6 md:py-10">
-      <div className="rounded-[2rem] border border-ink/10 bg-[radial-gradient(circle_at_top_left,_rgba(15,118,110,0.12),_transparent_34%),linear-gradient(180deg,_rgba(255,255,255,0.92),_rgba(255,255,255,0.72))] p-5 shadow-card backdrop-blur-sm sm:p-7 md:p-8">
+      <div className="rounded-[2rem] border border-ink/10 bg-[radial-gradient(circle_at_top_left,_rgba(15,118,110,0.12),_transparent_34%),linear-gradient(180deg,_rgba(255,255,255,0.92),_rgba(255,255,255,0.72))] p-5 shadow-card sm:p-7 md:p-8">
         <header className="grid gap-6 lg:grid-cols-[minmax(0,1.4fr)_minmax(320px,0.9fr)] lg:items-end">
           <div>
             <p className="font-mono text-xs uppercase tracking-[0.22em] text-teal-700">
@@ -269,12 +259,12 @@ export default function DashboardPage() {
             </Link>
           </div>
 
-          <div className="mt-6 grid gap-5 md:grid-cols-2 xl:grid-cols-3">
+          <div className="mt-6 grid gap-5 [grid-template-columns:repeat(auto-fill,minmax(260px,320px))]">
             {filteredContinueLearning.map((course) => (
               <ContinueLearningCard key={course.id} course={course} />
             ))}
             {!filteredContinueLearning.length && (
-              <p className="rounded-2xl border border-dashed border-ink/15 bg-white/70 px-5 py-8 font-body text-sm text-ink/55 md:col-span-2 xl:col-span-3">
+              <p className="col-span-full rounded-2xl border border-dashed border-ink/15 bg-white/70 px-5 py-8 font-body text-sm text-ink/55">
                 No continue-learning courses match your search.
               </p>
             )}
@@ -296,89 +286,40 @@ export default function DashboardPage() {
             </div>
           </div>
 
-          <div className="mt-6 grid gap-5 sm:grid-cols-2 xl:grid-cols-4">
+          <div className="mt-6 grid gap-5 [grid-template-columns:repeat(auto-fill,minmax(240px,280px))]">
             {filteredEnrolledCourses.map((course) => (
               <MyCourseCard key={course.id} course={course} />
             ))}
             {!filteredEnrolledCourses.length && (
-              <p className="rounded-2xl border border-dashed border-ink/15 bg-white/70 px-5 py-8 font-body text-sm text-ink/55 sm:col-span-2 xl:col-span-4">
+              <p className="col-span-full rounded-2xl border border-dashed border-ink/15 bg-white/70 px-5 py-8 font-body text-sm text-ink/55">
                 No enrolled courses match your search.
               </p>
             )}
           </div>
         </section>
 
-        <div className="mt-10 grid gap-8 lg:grid-cols-[0.95fr_1.05fr]">
-          <section aria-labelledby="recently-viewed-heading">
-            <h2
-              id="recently-viewed-heading"
-              className="font-display text-xl font-semibold text-ink"
-            >
-              Recently Viewed
-            </h2>
-            <p className="mt-1 font-body text-sm text-ink/55">
-              The last courses you opened.
-            </p>
+        <section className="mt-10" aria-labelledby="recommended-heading">
+          <h2
+            id="recommended-heading"
+            className="font-display text-xl font-semibold text-ink"
+          >
+            Recommended Courses
+          </h2>
+          <p className="mt-1 font-body text-sm text-ink/55">
+            Suggested next steps based on your learning path.
+          </p>
 
-            <ul className="mt-5 space-y-3">
-              {filteredRecentlyViewed.map((course) => (
-                <li key={course.id}>
-                  <Link
-                    href={`/courses/${course.id}`}
-                    className="card reveal flex items-center gap-4 px-4 py-3 transition hover:-translate-y-0.5 hover:shadow-lg"
-                  >
-                    <CourseThumbnail
-                      title={course.title}
-                      gradient="from-teal-600 to-teal-800"
-                      className="h-10 w-10 text-xs"
-                    />
-                    <div className="min-w-0 flex-1">
-                      <p className="font-display text-sm font-semibold text-ink">
-                        {course.title}
-                      </p>
-                      {course.category && (
-                        <p className="font-mono text-[10px] uppercase tracking-wide text-ink/40">
-                          {course.category}
-                        </p>
-                      )}
-                    </div>
-                    <span className="font-body text-sm text-teal-700" aria-hidden="true">
-                      →
-                    </span>
-                  </Link>
-                </li>
-              ))}
-              {!filteredRecentlyViewed.length && (
-                <li className="rounded-2xl border border-dashed border-ink/15 bg-white/70 px-5 py-8 font-body text-sm text-ink/55">
-                  No recently viewed courses match your search.
-                </li>
-              )}
-            </ul>
-          </section>
-
-          <section aria-labelledby="recommended-heading">
-            <h2
-              id="recommended-heading"
-              className="font-display text-xl font-semibold text-ink"
-            >
-              Recommended Courses
-            </h2>
-            <p className="mt-1 font-body text-sm text-ink/55">
-              Suggested next steps based on your learning path.
-            </p>
-
-            <div className="mt-5 grid gap-3 sm:grid-cols-2">
-              {filteredRecommendedCourses.map((course) => (
-                <RecommendedCourseCard key={course.id} course={course} />
-              ))}
-              {!filteredRecommendedCourses.length && (
-                <p className="rounded-2xl border border-dashed border-ink/15 bg-white/70 px-5 py-8 font-body text-sm text-ink/55 sm:col-span-2">
-                  No recommended courses match your search.
-                </p>
-              )}
-            </div>
-          </section>
-        </div>
+          <div className="mt-5 grid gap-3 [grid-template-columns:repeat(auto-fill,minmax(240px,320px))]">
+            {filteredRecommendedCourses.map((course) => (
+              <RecommendedCourseCard key={course.id} course={course} />
+            ))}
+            {!filteredRecommendedCourses.length && (
+              <p className="col-span-full rounded-2xl border border-dashed border-ink/15 bg-white/70 px-5 py-8 font-body text-sm text-ink/55">
+                No recommended courses match your search.
+              </p>
+            )}
+          </div>
+        </section>
 
         <section
           className="mt-10 rounded-xl2 border border-ink/10 bg-white shadow-card"
@@ -402,7 +343,7 @@ export default function DashboardPage() {
           </div>
         </section>
 
-        <section className="mt-10" aria-labelledby="advisor-heading">
+        <section id="advisor" className="mt-10 scroll-mt-24" aria-labelledby="advisor-heading">
           <h2
             id="advisor-heading"
             className="font-display text-lg font-semibold text-ink"
