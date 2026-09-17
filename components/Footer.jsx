@@ -18,13 +18,23 @@ export default function Footer() {
             <ul className="mt-3 space-y-2 font-body text-sm text-white/60">
               <li>Habeeb Nagar, Mahabub Nagar</li>
               <li>
+                <a href="tel:+919703979806" className="hover:text-white">
+                Office: +91 97039 79806
+                </a>
+              </li>
+              <li>
                 <a href="tel:+918712217977" className="hover:text-white">
-                  +91 87122 17977
+                 Personal: +91 87122 17977
                 </a>
               </li>
               <li>
                 <a href="mailto:Idealinspirer@gmail.com" className="hover:text-white">
                   Idealinspirer@gmail.com
+                </a>
+              </li>
+               <li>
+                <a href="https://www.idealinspirer.com" className="hover:text-white" target="_blank" rel="noreferrer">
+                  www.idealinspirer.com
                 </a>
               </li>
             </ul>

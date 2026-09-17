@@ -1,10 +1,12 @@
-import CourseCard from "@/components/CourseCard";
+import CourseBrowser from "@/components/CourseBrowser";
 import { getCourses } from "@/lib/data";
 
 export const metadata = {
   title: "Courses | Ideal Inspirer",
 };
-export const dynamic = "force-dynamic"; // <-- add this
+
+export const dynamic = "force-dynamic";
+export const revalidate = 0;
 
 export default async function CoursesPage() {
   const courses = await getCourses();
@@ -14,9 +16,11 @@ export default async function CoursesPage() {
       <p className="font-mono text-xs uppercase tracking-[0.2em] text-teal-700">
         All programs
       </p>
+
       <h1 className="mt-3 font-display text-3xl font-semibold text-ink">
         Find your next skill
       </h1>
+
       <p className="mt-2 max-w-lg font-body text-sm text-ink/55">
         Every program below is broken into modules — sign in to track your
         progress as you complete each one.
@@ -27,22 +31,15 @@ export default async function CoursesPage() {
           <p className="font-display text-lg font-semibold text-ink">
             No programs published yet
           </p>
+
           <p className="max-w-sm font-body text-sm text-ink/55">
-            Add rows to the <code>courses</code> table in Supabase and they'll
-            appear here.
+            Add rows to the <code>courses</code> table in Supabase and
+            they'll appear here.
           </p>
         </div>
       ) : (
-        <div className="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-          {courses.map((course) => (
-            <CourseCard key={course.id} course={course} />
-            
-          ))}
-        </div>
-
+        <CourseBrowser courses={courses} />
       )}
-
     </section>
-    
   );
 }

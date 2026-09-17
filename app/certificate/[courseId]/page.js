@@ -1,12 +1,23 @@
 "use client";
 
-import { useEffect, useState, useCallback, useRef } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { useParams } from "next/navigation";
 import Link from "next/link";
 import { useAuth } from "@/components/AuthProvider";
 import { supabase } from "@/lib/supabaseClient";
 
-// app/certificate/[courseId]/page.jsx
+// Certificate template is a fixed 1280x904 image (public/certificates/certificate-template.jpg).
+// Only a few spots on it are actually blank: the "Mr/Mrs ___" line, the empty
+// space below the paragraph, and the blank line near the bottom-left. All
+// dynamic text below is positioned (in %) to land on those blank spots.
+const TEMPLATE_SRC = "/certificates/certificate-template.jpg";
+const TEMPLATE_WIDTH = 1280;
+const TEMPLATE_HEIGHT = 904;
+
+// px-on-template -> % helpers, so the overlay stays aligned at any render size
+const xPct = (px) => `${(px / TEMPLATE_WIDTH) * 100}%`;
+const yPct = (px) => `${(px / TEMPLATE_HEIGHT) * 100}%`;
+
 export default function CertificatePage() {
   const { courseId } = useParams();
   const { user, loading: authLoading } = useAuth();
@@ -17,7 +28,6 @@ export default function CertificatePage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [downloading, setDownloading] = useState(false);
-  const certRef = useRef(null);
 
   const load = useCallback(async () => {
     if (!user) {
@@ -37,8 +47,7 @@ export default function CertificatePage() {
           .single(),
         supabase.from("courses").select("*").eq("id", courseId).single(),
       ]);
-console.log("Looking up:", { userId: user.id, courseId });
-console.log("Result:", { certData, certError });
+
     if (certError || !certData) {
       setError("No certificate found for this course yet.");
       setLoading(false);
@@ -57,63 +66,65 @@ console.log("Result:", { certData, certError });
     if (!authLoading) load();
   }, [authLoading, load]);
 
+  const completionDate = certificate?.issued_at
+    ? new Date(certificate.issued_at).toLocaleDateString(undefined, {
+        year: "numeric",
+        month: "long",
+        day: "numeric",
+      })
+    : "";
+
   const handleDownload = async () => {
     setDownloading(true);
     try {
-      // jsPDF is loaded client-side only; keeping the import dynamic avoids
-      // pulling it into the server bundle.
       const { jsPDF } = await import("jspdf");
       const doc = new jsPDF({ orientation: "landscape", unit: "pt", format: "a4" });
 
       const pageWidth = doc.internal.pageSize.getWidth();
       const pageHeight = doc.internal.pageSize.getHeight();
+      const scaleX = pageWidth / TEMPLATE_WIDTH;
+      const scaleY = pageHeight / TEMPLATE_HEIGHT;
+      const px = (v) => v * scaleX;
+      const py = (v) => v * scaleY;
 
-      doc.setDrawColor(15, 118, 110);
-      doc.setLineWidth(4);
-      doc.rect(24, 24, pageWidth - 48, pageHeight - 48);
-
-      doc.setFont("helvetica", "bold");
-      doc.setFontSize(28);
-      doc.setTextColor(15, 23, 42);
-      doc.text("Certificate of Completion", pageWidth / 2, 120, { align: "center" });
-
-      doc.setFont("helvetica", "normal");
-      doc.setFontSize(14);
-      doc.text("This certifies that", pageWidth / 2, 170, { align: "center" });
-
-      doc.setFont("helvetica", "bold");
-      doc.setFontSize(24);
-      doc.setTextColor(15, 118, 110);
-      doc.text(studentName || "Student", pageWidth / 2, 205, { align: "center" });
-
-      doc.setFont("helvetica", "normal");
-      doc.setFontSize(14);
-      doc.setTextColor(15, 23, 42);
-      doc.text("has successfully completed the course", pageWidth / 2, 235, {
-        align: "center",
+      // Load the template image as a data URL so jsPDF can embed it.
+      const imgResp = await fetch(TEMPLATE_SRC);
+      const imgBlob = await imgResp.blob();
+      const imgDataUrl = await new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onloadend = () => resolve(reader.result);
+        reader.onerror = reject;
+        reader.readAsDataURL(imgBlob);
       });
 
-      doc.setFont("helvetica", "bold");
-      doc.setFontSize(20);
-      doc.text(course?.title || "Course", pageWidth / 2, 265, { align: "center" });
+      doc.addImage(imgDataUrl, "JPEG", 0, 0, pageWidth, pageHeight);
 
-      doc.setFont("helvetica", "normal");
-      doc.setFontSize(11);
-      const completionDate = certificate?.issued_at
-        ? new Date(certificate.issued_at).toLocaleDateString(undefined, {
-            year: "numeric",
-            month: "long",
-            day: "numeric",
-          })
-        : "";
-      doc.text(`Completion date: ${completionDate}`, pageWidth / 2, 320, {
-        align: "center",
+      // Student name, on the "Mr/Mrs ____" line
+      doc.setFont("helvetica", "bold");
+      doc.setFontSize(16);
+      doc.setTextColor(15, 23, 42);
+      doc.text(studentName || "Student", px(465), py(436), { align: "center" });
+
+      // Course/program name, in the blank space below the paragraph
+      doc.setFont("helvetica", "bold");
+      doc.setFontSize(13);
+      doc.text(`Program: ${course?.title || "Course"}`, px(56), py(585), {
+        align: "left",
       });
+
+      // Completion date, on the blank line near the bottom-left
+      doc.setFont("helvetica", "normal");
+      doc.setFontSize(10);
+      doc.text(completionDate, px(178), py(738), { align: "center" });
+
+      // Certificate number, just below that
+      doc.setFontSize(9);
+      doc.setTextColor(100, 100, 100);
       doc.text(
         `Certificate No: ${certificate?.certificate_number ?? ""}`,
-        pageWidth / 2,
-        340,
-        { align: "center" }
+        px(56),
+        py(778),
+        { align: "left" }
       );
 
       doc.save(
@@ -161,37 +172,67 @@ console.log("Result:", { certData, certError });
     );
   }
 
-  const completionDate = certificate.issued_at
-    ? new Date(certificate.issued_at).toLocaleDateString(undefined, {
-        year: "numeric",
-        month: "long",
-        day: "numeric",
-      })
-    : "";
-
   return (
     <div className="mx-auto max-w-4xl px-4 py-12 sm:px-6">
-      <div
-        ref={certRef}
-        className="rounded-[2rem] border-4 border-teal-700/80 bg-white px-10 py-16 text-center shadow-card"
-      >
-        <p className="font-mono text-xs uppercase tracking-[0.3em] text-teal-700">
-          Certificate of Completion
-        </p>
-        <p className="mt-8 font-body text-sm text-ink/60">This certifies that</p>
-        <h1 className="mt-3 font-display text-3xl font-semibold text-ink">
-          {studentName}
-        </h1>
-        <p className="mt-6 font-body text-sm text-ink/60">
-          has successfully completed the course
-        </p>
-        <h2 className="mt-3 font-display text-2xl font-semibold text-teal-700">
-          {course?.title}
-        </h2>
+      <div className="relative w-full overflow-hidden rounded-[1.5rem] shadow-card">
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          src={TEMPLATE_SRC}
+          alt="Certificate of Appreciation"
+          className="block w-full h-auto select-none"
+          draggable={false}
+        />
 
-        <div className="mt-10 flex flex-wrap items-center justify-center gap-8 font-mono text-xs text-ink/40">
-          <span>Completed: {completionDate}</span>
-          <span>Certificate No: {certificate.certificate_number}</span>
+        {/* Student name, on the "Mr/Mrs ____" line */}
+        <div
+          className="absolute font-body font-semibold text-ink text-center"
+          style={{
+            left: xPct(295),
+            top: yPct(420),
+            width: xPct(340) /* relative width */,
+            fontSize: "clamp(0.7rem, 1.8vw, 1.15rem)",
+          }}
+        >
+          {studentName}
+        </div>
+
+        {/* Course/program name, in the blank space below the paragraph */}
+        <div
+          className="absolute font-body font-semibold text-ink"
+          style={{
+            left: xPct(56),
+            top: yPct(560),
+            width: xPct(760),
+            fontSize: "clamp(0.6rem, 1.4vw, 0.95rem)",
+          }}
+        >
+          Program: {course?.title}
+        </div>
+
+        {/* Completion date, on the blank line near the bottom-left */}
+        <div
+          className="absolute text-center text-ink/70"
+          style={{
+            left: xPct(105),
+            top: yPct(722),
+            width: xPct(147),
+            fontSize: "clamp(0.5rem, 1.1vw, 0.75rem)",
+          }}
+        >
+          {completionDate}
+        </div>
+
+        {/* Certificate number */}
+        <div
+          className="absolute text-ink/50"
+          style={{
+            left: xPct(56),
+            top: yPct(762),
+            width: xPct(320),
+            fontSize: "clamp(0.45rem, 1vw, 0.65rem)",
+          }}
+        >
+          Certificate No: {certificate.certificate_number}
         </div>
       </div>
 

@@ -5,6 +5,20 @@ import { useRouter } from "next/navigation";
 import { supabase } from "@/lib/supabaseClient";
 import { useAuth } from "@/components/AuthProvider";
 
+// Single source of truth for course domains. Import this list anywhere else
+// that needs to reference or filter on categories (e.g. CourseBrowser) so it
+// never drifts out of sync with what's selectable here.
+export const COURSE_CATEGORIES = [
+  "Software & Technical Tools",
+  "Programming Languages",
+  "Data & AI",
+  "Foreign/Spoken Languages",
+  "Test Prep",
+  "Marketing",
+  "Coaching / Academic Programs",
+  
+];
+
 // Shared by app/admin/courses/new/page.js (mode="create") and
 // app/admin/courses/[id]/edit/page.js (mode="edit").
 // Keeping ONE form means the create and edit flows can never drift
@@ -124,13 +138,21 @@ const handleSubmit = async (e) => {
 
         <div>
           <label className="block mb-2 font-medium">Category</label>
-          <input
-            type="text"
-            className="w-full border rounded-lg p-3"
-            placeholder="e.g. Web Development"
+          <select
+            className="w-full border rounded-lg p-3 bg-white"
             value={category}
             onChange={(e) => setCategory(e.target.value)}
-          />
+            required
+          >
+            <option value="" disabled>
+              Select a domain
+            </option>
+            {COURSE_CATEGORIES.map((cat) => (
+              <option key={cat} value={cat}>
+                {cat}
+              </option>
+            ))}
+          </select>
         </div>
 
         <div>
