@@ -16,7 +16,7 @@ export default function Footer() {
           <div>
             <p className="font-body text-sm font-semibold text-white">Contact</p>
             <ul className="mt-3 space-y-2 font-body text-sm text-white/60">
-              <li>Habeeb Nagar, Mahabub Nagar</li>
+              <li>Hanumanpura, Old Palamoor, Mahbubnagar, Telangana 509001</li>
               <li>
                 <a href="tel:+919703979806" className="hover:text-white">
                 Office: +91 97039 79806
