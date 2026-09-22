@@ -1,6 +1,7 @@
 import { Poppins, IBM_Plex_Mono } from "next/font/google";
 import "./globals.css";
 import { AuthProvider } from "@/components/AuthProvider";
+import TopBar from "@/components/TopBar";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import AdvisorButton from "@/components/AdvisorButton";
@@ -34,6 +35,7 @@ export default function RootLayout({ children }) {
     <html lang="en" className={`${display.variable} ${body.variable} ${mono.variable}`}>
       <body className="font-body">
         <AuthProvider>
+          <TopBar />
           <Navbar />
           <main>{children}</main>
           <Footer />

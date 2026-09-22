@@ -107,12 +107,19 @@ export default function Navbar() {
       }}
     >
       <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-4">
-        <Link href="/" className="flex items-center" onMouseEnter={() => setMenuOpen(false)}>
+        <Link
+          href="/"
+          className="relative flex items-center"
+          onMouseEnter={() => setMenuOpen(false)}
+        >
           <img
             src="/Logo.jpeg"
             alt="Ideal Inspirer"
             className="h-auto w-[9rem] object-contain"
           />
+          <span className="absolute -top-3 left-1/2 -translate-x-1/2 whitespace-nowrap  px-2.5 py-0.5 font-mono text-[9px] font-semibold uppercase tracking-wide text-gray shadow-card">
+            ISO 9001:2015 Certified
+          </span>
         </Link>
 
         {/* Desktop navigation */}

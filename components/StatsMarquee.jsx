@@ -1,4 +1,4 @@
-// Stats strip that scrolls left -> right continuously, in the same style as
+// Stats strip that scrolls right -> left continuously, in the same style as
 // the "Our Students Placed At" logo strip on the reference site.
 // Edit the numbers below anytime.
 const STATS = [
@@ -16,7 +16,7 @@ function Group({ hidden = false }) {
   const items = [...STATS, ...STATS];
   return (
     <ul
-      className="flex shrink-0 items-center gap-12 pr-12"
+      className="flex shrink-0 items-center gap-20 pr-20"
       aria-hidden={hidden || undefined}
     >
       {items.map((stat, i) => (

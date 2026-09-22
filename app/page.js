@@ -6,29 +6,9 @@ import JoinTheFuture from "@/components/JoinTheFuture";
 import Branches from "@/components/Branches";
 import { getCourses } from "@/lib/data";
 import { CATEGORY_ICONS, categoryHref } from "@/lib/categories";
+import TestimonialsMarquee from "@/components/TestimonialsMarquee";
 export const revalidate = 0;
-const values = [
-  {
-    title: "Learning that's built for use, not just for exams",
-    detail:
-      "Every program pairs a concept with a task you'd actually face at work or in an interview.",
-  },
-  {
-    title: "Mentors who've sat on the other side of the table",
-    detail:
-      "Trainers bring hiring and industry experience, not just slides.",
-  },
-  {
-    title: "Paced around the learner, not a fixed calendar",
-    detail:
-      "Modules unlock as you're ready, so progress reflects effort, not attendance.",
-  },
-  {
-    title: "One ecosystem across schools, colleges, and companies",
-    detail:
-      "Students, educators, and institutions train inside the same programs and grow together.",
-  },
-];
+
 
 export const dynamic = "force-dynamic"; // always fetch fresh courses, never cache this page at build time
 
@@ -38,7 +18,7 @@ export default async function HomePage() {
   return (
     <div>
       {/* Hero */}
-      <section className="mx-auto max-w-6xl px-6 pb-20 pt-16 md:pt-24">
+      <section className="mx-auto max-w-6xl px-6 pb-20 pt-1rem md:pt-14">
         <div className="grid gap-12 md:grid-cols-2 md:items-center">
           <div>
             <p className="font-mono text-xs uppercase tracking-[0.2em] text-teal-700">
@@ -111,34 +91,13 @@ export default async function HomePage() {
         </div>
       </section>
 
-      {/* Course grid */}
-      <section className="mx-auto max-w-6xl px-6 py-20">
-        <h2 className="font-display text-2xl font-semibold text-ink">
-          Programs open right now
-        </h2>
-        <p className="mt-2 max-w-lg font-body text-sm text-ink/55">
-          Pick a track below — each one opens into its full module list once
-          you're signed in.
-        </p>
 
-        {courses.length === 0 ? (
-          <div className="card mt-8 flex flex-col items-center gap-2 px-6 py-16 text-center">
-            <p className="font-display text-lg font-semibold text-ink">
-              No programs published yet
-            </p>
-            <p className="max-w-sm font-body text-sm text-ink/55">
-              Once rows are added to the <code>courses</code> table in
-              Supabase, they'll show up here automatically.
-            </p>
-          </div>
-        ) : (
-          <div className="mt-8 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-            {courses.map((course) => (
-              <CourseCard key={course.id} course={course} />
-            ))}
-          </div>
-        )}
-      </section>
+  <JoinTheFuture />
+      {/* Join the Future — animated counter + learning modes */}
+
+    
+
+
 {/* Certificate showcase */}
 <section className="bg-teal-50/60">
   <div className="mx-auto grid max-w-6xl gap-10 px-6 py-20 md:grid-cols-2 md:items-center">
@@ -206,173 +165,95 @@ export default async function HomePage() {
 
   </div>
 </section>
-      {/* Join the Future — animated counter + learning modes */}
-      <JoinTheFuture />
+    
+   {/* Course grid */}
+      <section className="mx-auto max-w-6xl px-6 py-20">
+        <h2 className="font-display text-2xl font-semibold text-ink">
+          Programs open right now
+        </h2>
+        <p className="mt-2 max-w-lg font-body text-sm text-ink/55">
+          Pick a track below — each one opens into its full module list once
+          you're signed in.
+        </p>
 
-      {/* Values */}
-      <section className="bg-ink">
-        <div className="mx-auto max-w-6xl px-6 py-20">
-          <h2 className="font-display text-2xl font-semibold text-white">
-            Why learners train with Ideal Inspirer
-          </h2>
-          <div className="mt-10 grid gap-8 sm:grid-cols-2">
-            {values.map((value) => (
-              <div key={value.title} className="border-l-2 border-marigold pl-5">
-                <h3 className="font-display text-base font-semibold text-white">
-                  {value.title}
-                </h3>
-                <p className="mt-2 font-body text-sm text-white/60">
-                  {value.detail}
-                </p>
-              </div>
+        {courses.length === 0 ? (
+          <div className="card mt-8 flex flex-col items-center gap-2 px-6 py-16 text-center">
+            <p className="font-display text-lg font-semibold text-ink">
+              No programs published yet
+            </p>
+            <p className="max-w-sm font-body text-sm text-ink/55">
+              Once rows are added to the <code>courses</code> table in
+              Supabase, they'll show up here automatically.
+            </p>
+          </div>
+        ) : (
+          <div className="mt-8 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+            {courses.map((course) => (
+              <CourseCard key={course.id} course={course} />
             ))}
           </div>
-        </div>
+        )}
       </section>
+
+
+    {/* About */}
+    <section className="mx-auto max-w-6xl px-6 py-20">
+  <p className="font-mono text-xs uppercase tracking-[0.2em] text-teal-700">
+    About us
+  </p>
+  <h2 className="mt-3 max-w-2xl font-display text-2xl font-semibold text-ink md:text-3xl">
+    A trusted name in modern education and professional training.
+  </h2>
+
+  <div className="mt-6 grid gap-10 md:grid-cols-[1.3fr_1fr] md:items-start">
+    <div className="space-y-4 font-body text-sm leading-6 text-ink/65 md:text-base">
+      <p>
+        Ideal Inspirer is an EdTech organization transforming education
+        through innovation and skill development. Winner of the{" "}
+        <span className="font-semibold text-ink">
+          Best EdTech Startup Award 2025
+        </span>{" "}
+        at the Indian School Awards, Hyderabad.
+      </p>
+      <p>
+        Founded by Dr. MD Siraj, we train students and educators in
+        software technology, English communication, and life skills —
+        bridging the gap between academics and real-world careers.
+      </p>
+
+      <div className="card mt-4 flex items-center gap-4 p-6">
+       
+        <div>
+          <p className="font-mono text-xs uppercase tracking-[0.2em] text-teal-700">
+            Founder & CEO
+          </p>
+          <h3 className="font-display text-lg font-semibold text-ink">
+            Dr. MD Siraj
+          </h3>
+          <p className="font-body text-sm text-ink/55">
+            Internationally Certified Master Trainer (ACTD)
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <img
+      src="/founder_img.png"
+      alt="Ideal Inspirer training session"
+      className="w-full rounded-2xl object-cover shadow-card md:sticky md:top-24 md:h-[420px]"
+    />
+  </div>
+</section>
+
+
+
 
       {/* Testimonials — PLACEHOLDER content, replace with real student reviews */}
-      <section className="bg-white">
-        <div className="mx-auto max-w-6xl px-6 py-20">
-          <p className="text-center font-mono text-xs uppercase tracking-[0.2em] text-teal-700">
-            What learners say
-          </p>
-          <h2 className="mt-3 text-center font-display text-2xl font-semibold text-ink md:text-3xl">
-            Student stories
-          </h2>
+          <TestimonialsMarquee />
 
-          <div className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-            {[
-              {
-                name: "Priya S.",
-                course: "Advanced Excel & Data Analyst",
-                quote:
-                  "The trainers explained everything with real work examples, not just theory. I felt job-ready by the end of the course.",
-                rating: 5,
-              },
-              {
-                name: "Rahul K.",
-                course: "Java Programming",
-                quote:
-                  "Best coding classes I've attended. The mentor's corporate background really showed in how he taught debugging.",
-                rating: 5,
-              },
-              {
-                name: "Ayesha M.",
-                course: "IELTS & PTE",
-                quote:
-                  "Scored well above my target band. The practice tests and feedback sessions made all the difference.",
-                rating: 4,
-              },
-            ].map((t) => (
-              <div key={t.name} className="card p-6">
-                <div className="text-marigold" aria-hidden="true">
-                  {"★".repeat(t.rating)}
-                  <span className="text-ink/20">{"★".repeat(5 - t.rating)}</span>
-                </div>
-                <p className="mt-3 font-body text-sm leading-6 text-ink/70">
-                  “{t.quote}”
-                </p>
-                <p className="mt-4 font-display text-sm font-semibold text-ink">
-                  {t.name}
-                </p>
-                <p className="font-mono text-xs uppercase tracking-wide text-ink/40">
-                  {t.course}
-                </p>
-              </div>
-            ))}
-          </div>
-          <p className="mt-6 text-center font-mono text-[10px] uppercase tracking-wide text-ink/30">
-            Sample testimonials — replace with real student reviews
-          </p>
-        </div>
-      </section>
-
-      {/* About */}
-      <section className="mx-auto max-w-6xl px-6 py-20">
-        <p className="font-mono text-xs uppercase tracking-[0.2em] text-teal-700">
-          About us
-        </p>
-        <h2 className="mt-3 max-w-2xl font-display text-2xl font-semibold text-ink md:text-3xl">
-          A trusted name in modern education and professional training.
-        </h2>
-
-        <div className="mt-6 grid gap-10 md:grid-cols-[1.3fr_1fr] md:items-start">
-          <div className="space-y-4 font-body text-sm leading-6 text-ink/65 md:text-base">
-            <p>
-              Ideal Inspirer is a forward-thinking EdTech organization dedicated
-              to transforming education through innovation, practical learning,
-              and skill development. Recognized with the{" "}
-              <span className="font-semibold text-ink">
-                Best EdTech Startup Award 2025
-              </span>{" "}
-              at the prestigious Indian School Awards held at Ashoka Hotel,
-              Hyderabad, Ideal Inspirer has established itself as a trusted name
-              in modern education and professional training.
-            </p>
-            <p>
-              Founded by Dr. MD Siraj, Ideal Inspirer focuses on empowering
-              students and educators through advanced training in software
-              technology, English communication, and life skills development.
-              The organization bridges the global skills gap by preparing
-              learners with the practical knowledge and confidence needed to
-              succeed in today's competitive and technology-driven world.
-            </p>
-            <p>
-              At Ideal Inspirer, education goes beyond textbooks. Our programs
-              are designed for schools and colleges — helping students
-              develop the creativity, communication skills, and professional
-              competence required for global opportunities.
-            </p>
-        
-          </div>
-
-          <img
-            src="/founder_img.png"
-            alt="Ideal Inspirer training session"
-            className="w-full rounded-2xl object-cover shadow-card md:sticky md:top-24 md:h-[420px]"
-          />
-        </div>
-      </section>
-
-      {/* Founder */}
-      <section className="bg-white">
-        <div className="mx-auto max-w-6xl px-6 py-20">
-          <div className="card grid gap-8 p-8 md:grid-cols-[minmax(0,220px)_1fr] md:p-10">
-            <div>
-              <p className="font-mono text-xs uppercase tracking-[0.2em] text-teal-700">
-                Founder & CEO
-              </p>
-              <h3 className="mt-3 font-display text-xl font-semibold text-ink">
-                Dr. MD Siraj
-              </h3>
-              <p className="mt-1 font-body text-sm text-ink/55">
-                Internationally Certified Master Trainer (ACTD)
-              </p>
-            </div>
-            <div className="space-y-4 font-body text-sm leading-6 text-ink/65 md:text-base">
-              <p>
-                Dr. MD Siraj is the visionary founder of Ideal Inspirer and an
-                internationally certified master trainer committed to
-                transforming education through innovation and skill-based
-                learning. With extensive experience in professional training
-                and educational development, he has empowered thousands of
-                students, educators, and professionals to unlock their true
-                potential.
-              </p>
-              <p>
-                His mission is to bridge the gap between academic learning and
-                real-world skills by introducing modern training programs in
-                technology, communication, and personal development. Through
-                his leadership, Ideal Inspirer continues to create impactful
-                learning opportunities that prepare individuals for global
-                success.
-              </p>
-            </div>
-          </div>
-        </div>
-      </section>
-
+  
       {/* Faculty / Trainers — from the Ideal Inspirer flyer */}
+          {/* Faculty / Trainers — from the Ideal Inspirer flyer */}
       <section className="mx-auto max-w-6xl px-6 py-20">
         <p className="text-center font-mono text-xs uppercase tracking-[0.2em] text-teal-700">
           Meet the team
@@ -385,7 +266,7 @@ export default async function HomePage() {
           not just people reading slides.
         </p>
 
-        <div className="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+        <div className="mt-10 -mx-6 flex snap-x snap-mandatory gap-5 overflow-x-auto px-6 pb-4 [-ms-overflow-style:auto] [scrollbar-width:thin]">
           {[
             {
               name: "Mr. Mady",
@@ -423,7 +304,10 @@ export default async function HomePage() {
               bio: "12+ years corporate expertise in Java programming and coding.",
             },
           ].map((trainer) => (
-            <div key={trainer.name} className="card p-6">
+            <div
+              key={trainer.name}
+              className="card w-[78%] shrink-0 snap-start p-6 sm:w-[46%] lg:w-[31%]"
+            >
               <div className="flex h-12 w-12 items-center justify-center rounded-full bg-teal-50 font-display text-lg font-semibold text-teal-700">
                 {trainer.name
                   .replace(/^(Mr\.|Ms\.|Mrs\.)\s*/, "")
@@ -442,7 +326,6 @@ export default async function HomePage() {
           ))}
         </div>
       </section>
-
       {/* Our Branches */}
       <Branches />
 

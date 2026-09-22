@@ -416,10 +416,22 @@ const { error: insertError } = await supabase
             {course.level && <span>{course.level}</span>}
           </div>
 
-          <div className="mt-6 flex items-center gap-4">
-            <p className="font-display text-lg font-semibold text-ink">
-              {course.is_free ? "Free" : `₹${course.price}`}
-            </p>
+                   <div className="mt-6 flex flex-wrap items-center gap-4">
+            {course.is_free ? (
+              <p className="font-display text-lg font-semibold text-ink">Free</p>
+            ) : (
+              <div className="flex flex-wrap items-baseline gap-x-2.5 gap-y-1">
+                <span className="font-body text-base text-ink/40 line-through">
+                  ₹{Math.floor(course.price * 1.1)}
+                </span>
+                <p className="font-display text-2xl font-bold text-ink">
+                  ₹{course.price}
+                </p>
+                <span className="rounded-full bg-teal-50 px-2.5 py-1 font-mono text-[11px] font-semibold uppercase tracking-wide text-teal-700">
+                  10% off
+                </span>
+              </div>
+            )}
             <button
               type="button"
               onClick={() => {
