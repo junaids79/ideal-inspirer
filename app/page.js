@@ -7,6 +7,7 @@ import Branches from "@/components/Branches";
 import { getCourses } from "@/lib/data";
 import { CATEGORY_ICONS, categoryHref } from "@/lib/categories";
 import TestimonialsMarquee from "@/components/TestimonialsMarquee";
+
 export const revalidate = 0;
 
 
