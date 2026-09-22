@@ -7,8 +7,14 @@ const resend = new Resend(process.env.RESEND_API_KEY);
 // is registered under — once you verify a domain (e.g. idealinspirer.com),
 // switch FROM_EMAIL to something like "notify@idealinspirer.com" and this
 // will deliver to anyone.
-const FROM_EMAIL = "Ideal Inspirer <onboarding@resend.dev>";
-const NOTIFY_EMAIL = "Idealinspirer@gmail.com";
+const FROM_EMAIL =
+  process.env.RESEND_FROM_EMAIL ||
+  "Ideal Inspirer <onboarding@resend.dev>";
+
+const NOTIFY_EMAIL =
+  process.env.RESEND_NOTIFY_EMAIL ||
+  "junaids5954@gmail.com";
+
 
 export async function POST(request) {
   try {

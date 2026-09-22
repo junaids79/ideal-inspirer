@@ -5,19 +5,12 @@ import { useRouter } from "next/navigation";
 import { supabase } from "@/lib/supabaseClient";
 import { useAuth } from "@/components/AuthProvider";
 
-// Single source of truth for course domains. Import this list anywhere else
-// that needs to reference or filter on categories (e.g. CourseBrowser) so it
-// never drifts out of sync with what's selectable here.
-export const COURSE_CATEGORIES = [
-  "Software & Technical Tools",
-  "Programming Languages",
-  "Data & AI",
-  "Foreign/Spoken Languages",
-  "Test Prep",
-  "Marketing",
-  "Coaching / Academic Programs",
-  
-];
+// Course domains live in lib/categories.js (single source of truth, also
+// used by the navbar menu and the course browser). Re-exported here so any
+// existing `import { COURSE_CATEGORIES } from "@/components/admin/CourseForm"`
+// keeps working.
+import { COURSE_CATEGORIES } from "@/lib/categories";
+export { COURSE_CATEGORIES };
 
 // Shared by app/admin/courses/new/page.js (mode="create") and
 // app/admin/courses/[id]/edit/page.js (mode="edit").

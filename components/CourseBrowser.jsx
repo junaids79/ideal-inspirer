@@ -2,7 +2,7 @@
 
 import { useMemo, useState } from "react";
 import CourseCard from "@/components/CourseCard";
-import { COURSE_CATEGORIES } from "@/components/admin/CourseForm";
+import { COURSE_CATEGORIES } from "@/lib/categories";
 
 export default function CourseBrowser({ courses, initialCategory = null }) {
   const [query, setQuery] = useState("");

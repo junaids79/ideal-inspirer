@@ -1,12 +1,12 @@
 import Link from "next/link";
 import CourseCard from "@/components/CourseCard";
+import OfficePhotoSlider from "@/components/OfficePhotoSlider";
+import StatsMarquee from "@/components/StatsMarquee";
+import JoinTheFuture from "@/components/JoinTheFuture";
+import Branches from "@/components/Branches";
 import { getCourses } from "@/lib/data";
+import { CATEGORY_ICONS, categoryHref } from "@/lib/categories";
 export const revalidate = 0;
-const steps = [
-  { label: "Discover", detail: "Find the right program for where you are today." },
-  { label: "Train", detail: "Work through modules with mentors who've done the job." },
-  { label: "Get placed", detail: "Move into interviews, roles, and real opportunity." },
-];
 const values = [
   {
     title: "Learning that's built for use, not just for exams",
@@ -62,58 +62,14 @@ export default async function HomePage() {
             </div>
           </div>
 
-          {/* Signature element: the learner's path, echoed later as the
-              module progress ladder inside each course. */}
-          <div className="reveal card p-8">
-            <p className="font-mono text-xs uppercase tracking-wide text-ink/40">
-              Your path with us
-            </p>
-            <ol className="mt-6 space-y-6">
-              {steps.map((step, i) => (
-                <li key={step.label} className="rung text-teal-700">
-                  <div className="flex items-baseline gap-3">
-                    <span className="font-mono text-xs text-ink/30">
-                      0{i + 1}
-                    </span>
-                    <span className="font-display text-base font-semibold text-ink">
-                      {step.label}
-                    </span>
-                  </div>
-                  <p className="mt-1 font-body text-sm text-ink/55">
-                    {step.detail}
-                  </p>
-                </li>
-              ))}
-            </ol>
-          </div>
+          {/* Office photo gallery — replaces the old "Discover, Train, Get
+              placed" text panel. Add photos in lib/officePhotos.js. */}
+          <OfficePhotoSlider />
         </div>
       </section>
 
-      {/* Stats strip — placeholder numbers, update with real figures anytime */}
-      <section className="bg-ink">
-        <div className="mx-auto grid max-w-6xl grid-cols-2 gap-8 px-6 py-10 sm:grid-cols-4">
-          {[
-            { icon: "👥", value: "5,000+", label: "Learners trained" },
-            { icon: "🎬", value: "25+", label: "Courses" },
-            { icon: "⭐", value: "4.8", label: "Google rating" },
-            { icon: "📱", value: "1,000+", label: "App installs" },
-          ].map((stat) => (
-            <div key={stat.label} className="flex items-center gap-4">
-              <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-full bg-white/10 text-2xl">
-                {stat.icon}
-              </div>
-              <div>
-                <p className="font-display text-xl font-semibold text-white">
-                  {stat.value}
-                </p>
-                <p className="font-body text-xs text-white/60 sm:text-sm">
-                  {stat.label}
-                </p>
-              </div>
-            </div>
-          ))}
-        </div>
-      </section>
+      {/* Stats strip — moving left-to-right, like the reference site */}
+      <StatsMarquee />
 
       {/* Live course count strip */}
       <section className="border-y border-ink/10 bg-white">
@@ -140,22 +96,15 @@ export default async function HomePage() {
           Jump straight to the track you're interested in.
         </p>
         <div className="mt-8 grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-6">
-          {[
-            { icon: "💻", label: "Computer Courses" },
-            { icon: "🐍", label: "Programming" },
-            { icon: "🌐", label: "Foreign Languages" },
-            { icon: "📊", label: "Data & Analytics" },
-            { icon: "☁️", label: "Cloud & DevOps" },
-            { icon: "🎓", label: "Academic Coaching" },
-          ].map((cat) => (
+          {Object.entries(CATEGORY_ICONS).map(([label, icon]) => (
             <Link
-              key={cat.label}
-              href={`/courses?category=${encodeURIComponent(cat.label)}`}
+              key={label}
+              href={categoryHref(label)}
               className="card flex flex-col items-center gap-3 px-4 py-6 text-center transition hover:-translate-y-1 hover:shadow-lg"
             >
-              <span className="text-3xl">{cat.icon}</span>
+              <span className="text-3xl">{icon}</span>
               <span className="font-body text-xs font-semibold text-ink/80 sm:text-sm">
-                {cat.label}
+                {label}
               </span>
             </Link>
           ))}
@@ -257,6 +206,9 @@ export default async function HomePage() {
 
   </div>
 </section>
+      {/* Join the Future — animated counter + learning modes */}
+      <JoinTheFuture />
+
       {/* Values */}
       <section className="bg-ink">
         <div className="mx-auto max-w-6xl px-6 py-20">
@@ -490,6 +442,9 @@ export default async function HomePage() {
           ))}
         </div>
       </section>
+
+      {/* Our Branches */}
+      <Branches />
 
       {/* App download banner — app isn't live yet, so buttons are marked "Coming soon" rather than linking anywhere */}
       <section className="mx-auto max-w-6xl px-6 py-20">

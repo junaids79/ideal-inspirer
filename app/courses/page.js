@@ -8,8 +8,12 @@ export const metadata = {
 export const dynamic = "force-dynamic";
 export const revalidate = 0;
 
-export default async function CoursesPage() {
+export default async function CoursesPage({ searchParams }) {
   const courses = await getCourses();
+  const category =
+    typeof searchParams?.category === "string" && searchParams.category.trim()
+      ? searchParams.category
+      : null;
 
   return (
     <section className="mx-auto max-w-6xl px-6 py-16">
@@ -38,7 +42,11 @@ export default async function CoursesPage() {
           </p>
         </div>
       ) : (
-        <CourseBrowser courses={courses} />
+        <CourseBrowser
+          key={category ?? "all"}
+          courses={courses}
+          initialCategory={category}
+        />
       )}
     </section>
   );
