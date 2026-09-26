@@ -26,7 +26,7 @@ export default async function HomePage() {
               Award-winning EdTech training
             </p>
             <h1 className="mt-4 font-display text-4xl font-semibold leading-[1.08] tracking-tight text-ink md:text-5xl">
-              Transforming talent into opportunity.
+               Ignite | Invest | Inspire
             </h1>
             <p className="mt-5 max-w-md font-body text-base text-ink/65">
               Practical training in communication, technology, and leadership —
