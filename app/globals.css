@@ -13,7 +13,7 @@ body {
 
 @layer components {
   .btn-primary {
-    @apply inline-flex items-center justify-center gap-2 rounded-full bg-marigold px-6 py-3 font-body font-semibold text-ink shadow-card transition hover:bg-marigold-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ink;
+    @apply inline-flex items-center justify-center gap-2 rounded-full bg-[#33a4f6] px-6 py-3 font-body font-semibold text-ink shadow-card transition hover:bg-[#2b94e0] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ink;
   }
 
   .btn-secondary {
@@ -21,7 +21,7 @@ body {
   }
 
   .field {
-    @apply w-full rounded-lg border border-ink/15 bg-white px-4 py-2.5 font-body text-ink placeholder:text-ink/40 focus:border-teal focus:outline-none focus:ring-2 focus:ring-teal/20;
+    @apply w-full rounded-lg border border-ink/15 bg-white px-4 py-2.5 font-body text-ink placeholder:text-ink/40 focus:border-[#0080de] focus:outline-none focus:ring-2 focus:ring-[#0080de]/20;
   }
 
   .card {
@@ -79,8 +79,10 @@ body {
    right" like the reference site's logo strip. */
 .marquee-track {
   display: flex;
+  flex-wrap: nowrap;
   width: max-content;
-  animation: marquee-scroll 28s linear infinite;
+  animation: marquee-scroll 42s linear infinite;
+  will-change: transform;
 }
 
 .marquee:hover .marquee-track {

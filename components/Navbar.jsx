@@ -153,6 +153,14 @@ export default function Navbar() {
           </div>
 
           <Link
+            href="/#about"
+            onMouseEnter={() => setMenuOpen(false)}
+            className={linkClass(false)}
+          >
+            About Us
+          </Link>
+
+          <Link
             href="/enquire"
             onMouseEnter={() => setMenuOpen(false)}
             className={linkClass(pathname === "/enquire")}
@@ -337,6 +345,10 @@ export default function Navbar() {
                 </ul>
               )}
             </div>
+
+            <Link href="/#about" onClick={() => setMobileOpen(false)}>
+              About Us
+            </Link>
 
             <Link href="/enquire" onClick={() => setMobileOpen(false)}>
               Enquire

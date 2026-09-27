@@ -22,16 +22,16 @@ export default async function HomePage() {
       <section className="mx-auto max-w-6xl px-6 pb-20 pt-1rem md:pt-14">
         <div className="grid gap-12 md:grid-cols-2 md:items-center">
           <div>
-            <p className="font-mono text-xs uppercase tracking-[0.2em] text-teal-700">
-              Award-winning EdTech training
+            <p className="font-mono text-xs uppercase tracking-[0.2em] text-[#0080de]">
+                             Ignite | Invest | Inspire
+
             </p>
-            <h1 className="mt-4 font-display text-4xl font-semibold leading-[1.08] tracking-tight text-ink md:text-5xl">
-               Ignite | Invest | Inspire
+            <h1 className="mt-4 font-mono font-display text-4xl font-semibold leading-[1.08] tracking-tight text-ink md:text-5xl">
+                            Rebuild Your Skills. Rebuild Your Professional Career.
+
             </h1>
             <p className="mt-5 max-w-md font-body text-base text-ink/65">
-              Practical training in communication, technology, and leadership —
-              built for students, educators, and professionals who want the
-              modern-world skills that get them hired.
+             Build your skills. Strengthen your confidence. Transform your career with practical training and expert counselling in communication, technology, and professional development.
             </p>
             <div className="mt-8 flex flex-wrap gap-3">
               <Link href="/courses" className="btn-primary">
@@ -62,7 +62,7 @@ export default async function HomePage() {
             {courses.length === 1 ? "program" : "programs"} currently open for
             enrollment
           </p>
-          <Link href="/courses" className="font-semibold text-teal-700 hover:text-teal-700/80">
+          <Link href="/courses" className="font-semibold text-[#0080de] hover:text-[#2b94e0]">
             See all programs →
           </Link>
         </div>
@@ -120,15 +120,15 @@ export default async function HomePage() {
           aria-hidden="true"
         >
           <div className="rotate-[-20deg] text-center opacity-[0.10]">
-            <div className="font-display text-4xl font-bold uppercase tracking-[0.25em] text-teal-700 md:text-6xl">
+            <div className="font-display text-4xl font-bold uppercase tracking-[0.25em] text-[#0080de] md:text-6xl">
               IDEAL
             </div>
 
-            <div className="mt-1 font-display text-3xl font-bold uppercase tracking-[0.2em] text-teal-700 md:text-5xl">
+            <div className="mt-1 font-display text-3xl font-bold uppercase tracking-[0.2em] text-[#0080de] md:text-5xl">
               INSPIRER
             </div>
 
-            <div className="mt-2 font-mono text-[9px] uppercase tracking-[0.3em] text-teal-700 md:text-xs">
+            <div className="mt-2 font-mono text-[9px] uppercase tracking-[0.3em] text-[#0080de] md:text-xs">
               TRAINING & CONSULTING
             </div>
           </div>
@@ -139,7 +139,7 @@ export default async function HomePage() {
 
     {/* Right-side content */}
     <div className="order-1 md:order-2">
-      <p className="font-mono text-xs uppercase tracking-[0.2em] text-teal-700">
+      <p className="font-mono text-xs uppercase tracking-[0.2em] text-[#0080de]">
         Get proof for your newly learnt skills
       </p>
 
@@ -198,8 +198,8 @@ export default async function HomePage() {
 
 
     {/* About */}
-    <section className="mx-auto max-w-6xl px-6 py-20">
-  <p className="font-mono text-xs uppercase tracking-[0.2em] text-teal-700">
+    <section id="about" className="mx-auto max-w-6xl px-6 py-20 scroll-mt-24">
+  <p className="font-mono text-xs uppercase tracking-[0.2em] text-[#0080de]">
     About us
   </p>
   <h2 className="mt-3 max-w-2xl font-display text-2xl font-semibold text-ink md:text-3xl">
@@ -211,7 +211,7 @@ export default async function HomePage() {
       <p>
         Ideal Inspirer is an EdTech organization transforming education
         through innovation and skill development. Winner of the{" "}
-        <span className="font-semibold text-ink">
+        <span className="font-semibold text-ink bg-[#3ba6f3]">
           Best EdTech Startup Award 2025
         </span>{" "}
         at the Indian School Awards, Hyderabad.
@@ -225,7 +225,7 @@ export default async function HomePage() {
       <div className="card mt-4 flex items-center gap-4 p-6">
        
         <div>
-          <p className="font-mono text-xs uppercase tracking-[0.2em] text-teal-700">
+          <p className="font-mono text-xs uppercase tracking-[0.2em] text-[#0080de]">
             Founder & CEO
           </p>
           <h3 className="font-display text-lg font-semibold text-ink">
@@ -256,7 +256,7 @@ export default async function HomePage() {
       {/* Faculty / Trainers — from the Ideal Inspirer flyer */}
           {/* Faculty / Trainers — from the Ideal Inspirer flyer */}
       <section className="mx-auto max-w-6xl px-6 py-20">
-        <p className="text-center font-mono text-xs uppercase tracking-[0.2em] text-teal-700">
+        <p className="text-center font-mono text-xs uppercase tracking-[0.2em] text-[#0080de]">
           Meet the team
         </p>
         <h2 className="mt-3 text-center font-display text-2xl font-semibold text-ink md:text-3xl">
@@ -309,7 +309,7 @@ export default async function HomePage() {
               key={trainer.name}
               className="card w-[78%] shrink-0 snap-start p-6 sm:w-[46%] lg:w-[31%]"
             >
-              <div className="flex h-12 w-12 items-center justify-center rounded-full bg-teal-50 font-display text-lg font-semibold text-teal-700">
+              <div className="flex h-12 w-12 items-center justify-center rounded-full bg-teal-50 font-display text-lg font-semibold text-[#0080de]">
                 {trainer.name
                   .replace(/^(Mr\.|Ms\.|Mrs\.)\s*/, "")
                   .charAt(0)}
@@ -317,7 +317,7 @@ export default async function HomePage() {
               <h3 className="mt-4 font-display text-base font-semibold text-ink">
                 {trainer.name}
               </h3>
-              <p className="mt-1 font-mono text-xs uppercase tracking-wide text-teal-700">
+              <p className="mt-1 font-mono text-xs uppercase tracking-wide text-[#0080de]">
                 {trainer.role}
               </p>
               <p className="mt-3 font-body text-sm text-ink/60">
@@ -334,7 +334,7 @@ export default async function HomePage() {
       <section className="mx-auto max-w-6xl px-6 py-20">
         <div className="card flex flex-col items-center gap-6 overflow-hidden p-10 text-center md:flex-row md:justify-between md:p-14 md:text-left">
           <div>
-            <p className="font-mono text-xs uppercase tracking-[0.2em] text-teal-700">
+            <p className="font-mono text-xs uppercase tracking-[0.2em] text-[#0080de]">
               Download our app and
             </p>
             <h2 className="mt-2 font-display text-2xl font-semibold text-ink md:text-3xl">
@@ -378,7 +378,7 @@ export default async function HomePage() {
 
       {/* FAQ */}
       <section className="mx-auto max-w-3xl px-6 py-20">
-        <p className="text-center font-mono text-xs uppercase tracking-[0.2em] text-teal-700">
+        <p className="text-center font-mono text-xs uppercase tracking-[0.2em] text-[#0080de]">
           Questions
         </p>
         <h2 className="mt-3 text-center font-display text-2xl font-semibold text-ink md:text-3xl">
@@ -418,7 +418,7 @@ export default async function HomePage() {
             >
               <summary className="flex cursor-pointer list-none items-center justify-between gap-4 font-display text-sm font-semibold text-ink">
                 {item.q}
-                <span className="shrink-0 font-mono text-teal-700 transition group-open:rotate-45">
+                <span className="shrink-0 font-mono text-[#0080de] transition group-open:rotate-45">
                   +
                 </span>
               </summary>

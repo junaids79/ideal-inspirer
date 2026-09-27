@@ -42,7 +42,7 @@ export default function StatsMarquee() {
   return (
     <section className="bg-ink" aria-label="Ideal Inspirer at a glance">
       <div className="marquee relative overflow-hidden py-10">
-        <div className="marquee-track">
+        <div className="marquee-track" style={{ animation: "marquee-scroll 42s linear infinite" }}>
           <Group />
           <Group hidden />
         </div>

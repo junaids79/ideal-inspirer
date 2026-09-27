@@ -93,8 +93,8 @@ export default function TestimonialsMarquee() {
           Student stories
         </h2>
 
-        <div className=" relative mt-10 overflow-hidden">
-          <div className="marquee-track" style={{ animationDuration: "50s" }}>
+        <div className="marquee relative mt-10 overflow-hidden">
+          <div className="marquee-track" style={{ animation: "marquee-scroll 70s linear infinite" }}>
             <Group />
             <Group hidden />
           </div>
