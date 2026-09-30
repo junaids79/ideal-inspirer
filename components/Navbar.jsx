@@ -113,7 +113,7 @@ export default function Navbar() {
           onMouseEnter={() => setMenuOpen(false)}
         >
           <img
-            src="/Logo.jpeg"
+            src="/Logo.png"
             alt="Ideal Inspirer"
             className="h-auto w-[9rem] object-contain"
           />

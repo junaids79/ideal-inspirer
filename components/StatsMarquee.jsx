@@ -2,7 +2,7 @@
 // the "Our Students Placed At" logo strip on the reference site.
 // Edit the numbers below anytime.
 const STATS = [
-  { icon: "👥", value: "5,000+", label: "Learners trained" },
+  { icon: "👥", value: "30,000+", label: "Students trained" },
   { icon: "🎬", value: "25+", label: "Courses" },
   { icon: "⭐", value: "4.8", label: "Google rating" },
   { icon: "📱", value: "1,000+", label: "App installs" },
@@ -41,7 +41,7 @@ function Group({ hidden = false }) {
 export default function StatsMarquee() {
   return (
     <section className="bg-ink" aria-label="Ideal Inspirer at a glance">
-      <div className="marquee relative overflow-hidden py-10">
+      <div className="marquee relative overflow-hidden py-4">
         <div className="marquee-track" style={{ animation: "marquee-scroll 42s linear infinite" }}>
           <Group />
           <Group hidden />

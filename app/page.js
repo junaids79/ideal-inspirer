@@ -18,20 +18,24 @@ export default async function HomePage() {
 
   return (
     <div>
+        <StatsMarquee />
       {/* Hero */}
-      <section className="mx-auto max-w-6xl px-6 pb-20 pt-1rem md:pt-14">
+
+      <section className="mx-auto max-w-6xl px-6 pb-20 pt-1rem md:pt-9">
         <div className="grid gap-12 md:grid-cols-2 md:items-center">
           <div>
             <p className="font-mono text-xs uppercase tracking-[0.2em] text-[#0080de]">
-                             Ignite | Invest | Inspire
-
+                Ignite | Invest | Inspire
             </p>
-            <h1 className="mt-4 font-mono font-display text-4xl font-semibold leading-[1.08] tracking-tight text-ink md:text-5xl">
-                            Rebuild Your Skills. Rebuild Your Professional Career.
-
+            <h1 className="mt-4 font-display text-4xl font-semibold leading-[1.08] tracking-tight text-ink md:text-5xl">
+            <span className="text-[#f51533]">Rebuild your Skills</span> 
+            <br />
+             Rebuild your Professional Career. 
             </h1>
             <p className="mt-5 max-w-md font-body text-base text-ink/65">
-             Build your skills. Strengthen your confidence. Transform your career with practical training and expert counselling in communication, technology, and professional development.
+              Practical training in communication, technology, and leadership —
+              built for students, educators, and professionals who want the
+              modern-world skills that get them hired.
             </p>
             <div className="mt-8 flex flex-wrap gap-3">
               <Link href="/courses" className="btn-primary">
@@ -50,7 +54,7 @@ export default async function HomePage() {
       </section>
 
       {/* Stats strip — moving left-to-right, like the reference site */}
-      <StatsMarquee />
+    
 
       {/* Live course count strip */}
       <section className="border-y border-ink/10 bg-white">
@@ -96,7 +100,100 @@ export default async function HomePage() {
   <JoinTheFuture />
       {/* Join the Future — animated counter + learning modes */}
 
-    
+    {/* How Can We Help You — 4-step process */}
+    <section className="bg-paper">
+      <div className="mx-auto max-w-6xl px-6 py-20">
+        <div className="text-center">
+          <p className="font-mono text-xs uppercase tracking-[0.2em] text-marigold">
+            Our Services
+          </p>
+          <h2 className="mt-3 font-display text-3xl font-bold text-ink md:text-4xl">
+            How Can We <span className="text-marigold">Help</span> You?
+          </h2>
+        </div>
+
+        <div className="mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+          {[
+            {
+              step: "1",
+              title: "Talk To Our Counselor",
+              desc: "Discuss your career goals with our expert counselors and create a personalized learning plan.",
+              bg: "bg-marigold-50",
+              iconBg: "bg-marigold",
+              icon: (
+                <path d="M6.6 10.8c1.4 2.8 3.8 5.2 6.6 6.6l2.2-2.2c.3-.3.7-.4 1-.2 1.1.4 2.3.6 3.6.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1C10.6 21 3 13.4 3 4c0-.6.4-1 1-1h3.4c.6 0 1 .4 1 1 0 1.3.2 2.5.6 3.6.1.4 0 .8-.2 1L6.6 10.8Z" />
+              ),
+            },
+            {
+              step: "2",
+              title: "Get Enrolled In Courses by Payment Gateway",
+              desc: "Enroll in our comprehensive technology courses and gain industry-relevant skills.",
+              bg: "bg-teal-50",
+              iconBg: "bg-teal",
+              icon: (
+                <path d="M12 3 1 9l11 6 9-4.9V17h2V9L12 3Zm0 9.5L4.5 8.4 12 4.3l7.5 4.1L12 12.5ZM5 12.2V17c0 1.7 3.1 4 7 4s7-2.3 7-4v-4.8l-7 3.8-7-3.8Z" />
+              ),
+            },
+            {
+              step: "3",
+              title: "Take Courses Online + Offline",
+              desc: "Upskill or reskill with our expert-led courses and become a master in technology.",
+              bg: "bg-ink-50",
+              iconBg: "bg-ink",
+              icon: (
+                <path d="M12 12a5 5 0 1 0 0-10 5 5 0 0 0 0 10Zm0 2c-4.4 0-8 2.2-8 5v2h16v-2c0-2.8-3.6-5-8-5Z" />
+              ),
+            },
+            {
+              step: "4",
+              title: "Earn Certificate & Get Ready for Your Dream Job.",
+              desc: "Launch your dream career in technology with our career-focused courses and support.",
+              bg: "bg-marigold-50",
+              iconBg: "bg-marigold-600",
+              icon: (
+                <path d="M9 3a2 2 0 0 0-2 2v1H4a2 2 0 0 0-2 2v3h20V8a2 2 0 0 0-2-2h-3V5a2 2 0 0 0-2-2H9Zm0 2h6v1H9V5ZM2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6H2Z" />
+              ),
+            },
+          ].map((s) => (
+            <div key={s.step} className={`rounded-2xl ${s.bg} p-6`}>
+              <div
+                className={`flex h-12 w-12 items-center justify-center rounded-xl ${s.iconBg}`}
+              >
+                <svg
+                  viewBox="0 0 24 24"
+                  className="h-6 w-6 fill-white"
+                  aria-hidden="true"
+                >
+                  {s.icon}
+                </svg>
+              </div>
+
+              <div className="mt-6 flex items-start gap-3">
+                <span className="font-display text-4xl font-bold text-ink/90">
+                  {s.step}
+                </span>
+                <div>
+                  <h3 className="font-display text-base font-semibold text-ink">
+                    {s.title}
+                  </h3>
+                  <p className="mt-1 font-body text-sm text-ink/60">
+                    {s.desc}
+                  </p>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+
+        <div className="mt-10 text-center">
+          <Link href="/enquire" className="btn-primary">
+            📞 Book Your Demo Now
+          </Link>
+        </div>
+      </div>
+    </section>
+
+
 
 
 {/* Certificate showcase */}
@@ -440,7 +537,7 @@ export default async function HomePage() {
           point you at the right course.
         </p>
         <Link href="/enquire" className="btn-primary mt-6 inline-flex">
-          Talk to a trainer
+          Contact to Admission Counsellor
         </Link>
       </section>
     </div>

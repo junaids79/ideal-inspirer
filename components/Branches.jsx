@@ -83,7 +83,7 @@ export default function Branches() {
                 Coming soon
               </span>
               <h3 className="mt-4 font-display text-xl font-semibold text-ink">
-                Hyderabad
+                Hyderabad, Attapur
               </h3>
               <p className="mt-3 font-body text-sm leading-6 text-ink/65">
                 We are bringing Ideal Inspirer training to Hyderabad soon!

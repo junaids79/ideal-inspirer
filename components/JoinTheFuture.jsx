@@ -83,11 +83,7 @@ export default function JoinTheFuture() {
           ))}
         </div>
 
-        <div className="mt-10 text-center">
-          <Link href="/enquire" className="btn-primary">
-            Book a free demo
-          </Link>
-        </div>
+       
       </div>
     </section>
   );

@@ -72,7 +72,9 @@ export async function POST(req) {
     }
 
     return Response.json({
-      reply: completion.choices[0].message.content,
+      reply:
+        completion.choices[0].message.content +
+        "\n\n📞 Contact our admission counsellor at +91 9703979806 for more queries.",
     });
   } catch (err) {
     console.error("Chat API error:", err);
