@@ -6,20 +6,13 @@ import ChatWidget from "@/components/ChatWidget";
 // Fixed, site-wide entry point into the training advisor. Opens the chat
 // as a floating panel on top of whatever page you're on, instead of
 // navigating to /dashboard and scrolling down to find it.
-// WhatsApp number of the institute (country code + number, digits only).
-const WHATSAPP_NUMBER = "919703979806";
-const WHATSAPP_MESSAGE = "Hello Ideal Inspirer, I would like to know more about your courses.";
-const WHATSAPP_URL = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(
-  WHATSAPP_MESSAGE
-)}`;
-
 export default function AdvisorButton() {
   const [open, setOpen] = useState(false);
 
   return (
     <>
       {open && (
-        <div className="fixed bottom-40 right-5 z-50 w-[22rem] max-w-[calc(100vw-2.5rem)]">
+        <div className="fixed bottom-24 right-5 z-50 w-[22rem] max-w-[calc(100vw-2.5rem)]">
           <div className="mb-2 flex items-center justify-between rounded-t-2xl bg-ink px-4 py-3">
             <p className="font-display text-sm font-semibold text-white">
               Training advisor
@@ -36,35 +29,6 @@ export default function AdvisorButton() {
           <ChatWidget />
         </div>
       )}
-
-      {/* WhatsApp — opens a chat with the institute (WhatsApp Web or the app) */}
-      <a
-        href={WHATSAPP_URL}
-        target="_blank"
-        rel="noopener noreferrer"
-        aria-label="Chat with us on WhatsApp"
-        title="Chat on WhatsApp"
-        className="fixed bottom-24 right-5 z-50 flex h-14 w-14 items-center justify-center rounded-full bg-[#25D366] text-white shadow-card transition hover:-translate-y-0.5 hover:shadow-lg focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ink"
-      >
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="1.8"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          className="h-8 w-8"
-          aria-hidden="true"
-        >
-          <path d="M3.5 20.5l1.4-4.3A8.5 8.5 0 1 1 8 19.2l-4.5 1.3z" />
-          <path
-            d="M9.2 7.8c.3-.4.7-.3.9.1l.7 1.5c.1.3 0 .5-.2.7l-.5.6c.7 1.4 1.8 2.4 3.2 3.1l.6-.6c.2-.2.5-.3.8-.1l1.5.7c.4.2.4.6.1.9-.6.8-1.5 1.1-2.4.8-3-1-5.1-3.1-6-6-.2-.9.1-1.2.8-1.7z"
-            fill="currentColor"
-            stroke="none"
-          />
-        </svg>
-      </a>
 
       <button
         type="button"

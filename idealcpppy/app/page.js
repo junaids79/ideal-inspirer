@@ -7,7 +7,6 @@ import Branches from "@/components/Branches";
 import { getCourses } from "@/lib/data";
 import { CATEGORY_ICONS, categoryHref } from "@/lib/categories";
 import TestimonialsMarquee from "@/components/TestimonialsMarquee";
-import AlumniMarquee from "@/components/AlumniMarquee";
 
 export const revalidate = 0;
 
@@ -294,9 +293,6 @@ export default async function HomePage() {
         )}
       </section>
 
-
-    {/* Alumni companies slider */}
-    <AlumniMarquee />
 
     {/* About */}
     <section id="about" className="mx-auto max-w-6xl px-6 py-20 scroll-mt-24">

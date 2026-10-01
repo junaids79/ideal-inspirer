@@ -161,22 +161,6 @@ export default function Navbar() {
           </Link>
 
           <Link
-            href="/placements"
-            onMouseEnter={() => setMenuOpen(false)}
-            className={linkClass(pathname === "/placements")}
-          >
-            Placements
-          </Link>
-
-          <Link
-            href="/events"
-            onMouseEnter={() => setMenuOpen(false)}
-            className={linkClass(pathname === "/events")}
-          >
-            Events
-          </Link>
-
-          <Link
             href="/enquire"
             onMouseEnter={() => setMenuOpen(false)}
             className={linkClass(pathname === "/enquire")}
@@ -364,14 +348,6 @@ export default function Navbar() {
 
             <Link href="/#about" onClick={() => setMobileOpen(false)}>
               About Us
-            </Link>
-
-            <Link href="/placements" onClick={() => setMobileOpen(false)}>
-              Placements
-            </Link>
-
-            <Link href="/events" onClick={() => setMobileOpen(false)}>
-              Events
             </Link>
 
             <Link href="/enquire" onClick={() => setMobileOpen(false)}>

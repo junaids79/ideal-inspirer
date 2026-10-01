@@ -2,9 +2,9 @@
 @tailwind components;
 @tailwind utilities;
 
-/* body {
+body {
   font-family: "Times New Roman", Times, serif !important;
-} */
+}
 html {
   scroll-behavior: smooth;
 }

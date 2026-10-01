@@ -1,0 +1,47 @@
+import { Poppins, IBM_Plex_Mono } from "next/font/google";
+import "./globals.css";
+import { AuthProvider } from "@/components/AuthProvider";
+// import TopBar from "@/components/TopBar";
+import Navbar from "@/components/Navbar";
+import Footer from "@/components/Footer";
+import AdvisorButton from "@/components/AdvisorButton";
+
+const display = Poppins({
+  subsets: ["latin"],
+  variable: "--font-display",
+  weight: ["500", "600", "700", "800"],
+});
+
+const body = Poppins({
+  subsets: ["latin"],
+  variable: "--font-body",
+  weight: ["400", "500", "600", "700"],
+});
+
+const mono = IBM_Plex_Mono({
+  subsets: ["latin"],
+  variable: "--font-mono",
+  weight: ["400", "500"],
+});
+
+export const metadata = {
+  title: "Ideal Inspirer | Transforming Talent into Opportunity",
+  description:
+    "Training in English communication, life skills, technology, and leadership for students and professionals — from Ideal Inspirer.",
+};
+
+export default function RootLayout({ children }) {
+  return (
+    <html lang="en" className={`${display.variable} ${body.variable} ${mono.variable}`}>
+      <body className="font-body">
+        <AuthProvider>
+          {/* <TopBar /> */}
+          <Navbar />
+          <main>{children}</main>
+          <Footer />
+          <AdvisorButton />
+        </AuthProvider>
+      </body>
+    </html>
+  );
+}
